@@ -1,49 +1,606 @@
+/* ══════════════════════════════════════════════════════════════════
+   CIVIC MINIMALISM DESIGN SYSTEM
+   Standardized Government & Public Sector Design Language
+   Inspired by GOV.UK, UIDAI, DigiLocker & India.gov.in
+   ══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Civic National Palette ── */
+  --civic-navy: #002B49;          /* Official Indian Institutional Navy */
+  --civic-navy-dark: #001B2E;
+  --civic-navy-light: #F0F4F8;
+  
+  --civic-saffron: #D97706;       /* Warm civic saffron */
+  --civic-saffron-dark: #B45309;
+  --civic-saffron-light: #FEF3C7;
+  
+  --civic-green: #15803D;         /* Agricultural / Verified Green */
+  --civic-green-dark: #14532D;
+  --civic-green-light: #DCFCE7;
+  
+  --civic-red: #B91C1C;           /* Alert / High Congestion Red */
+  --civic-red-light: #FEE2E2;
+
+  /* ── Core Canvas & Content ── */
+  --background: #F8F9FA;          /* Classic public-service off-white */
+  --surface: #FFFFFF;
+  --surface-secondary: #F1F3F5;
+  
+  --foreground: #1A1A1A;          /* Strict high contrast */
+  --foreground-secondary: #4A5568;
+  --foreground-muted: #64748B;
+  
+  --border: #D1D5DB;              /* Solid structural borders */
+  --border-strong: #4B5563;
+  --border-subtle: #E5E7EB;
+  
+  /* ── Token Aliases for Unified Civic Minimalist Theme ── */
+  --primary: var(--civic-navy);
+  --primary-hover: var(--civic-navy-dark);
+  --primary-light: var(--civic-navy-light);
+  --accent: var(--civic-saffron);
+  --accent-light: var(--civic-saffron-light);
+  --success: var(--civic-green);
+  --success-light: var(--civic-green-light);
+  --error: var(--civic-red);
+  --error-light: var(--civic-red-light);
+  --muted: #F1F5F9;
+  --muted-foreground: var(--foreground-muted);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ══ Universal Reset ══ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
+  background-color: var(--background);
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* ══ Accessibility & Focus Ring ══ */
+:focus-visible {
+  outline: 3px solid #F59E0B;
+  outline-offset: 2px;
 }
 
+/* ══ Links ══ */
 a {
-  color: inherit;
-  text-decoration: none;
+  color: var(--civic-navy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  font-weight: 500;
+  transition: color 0.1s ease;
+}
+a:hover {
+  color: var(--civic-saffron);
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* ══ Tricolor National Ribbon ══ */
+.tricolor-strip {
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    #FF9933 0%,
+    #FF9933 33.33%,
+    #FFFFFF 33.33%,
+    #FFFFFF 66.66%,
+    #138808 66.66%,
+    #138808 100%
+  );
+}
+
+/* ══ Top Citizen Utility Bar ══ */
+.civic-topbar {
+  background: #001E33;
+  color: #E2E8F0;
+  font-size: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.35rem 0;
+}
+.civic-topbar-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.civic-topbar a {
+  color: #E2E8F0;
+  text-decoration: none;
+  font-weight: 400;
+}
+.civic-topbar a:hover {
+  text-decoration: underline;
+  color: #FEF08A;
+}
+
+/* ══ Primary Civic Navigation Header ══ */
+.civic-header {
+  background: var(--civic-navy);
+  color: #FFFFFF;
+  border-bottom: 3px solid var(--civic-saffron);
+  padding: 0.85rem 0;
+}
+.civic-header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.civic-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+.civic-emblem {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+.civic-brand-titles {
+  display: flex;
+  flex-direction: column;
+}
+.civic-header-hindi {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+.civic-header-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.civic-header-subtitle {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+.civic-nav-links {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+.civic-nav-links a {
+  color: #E2E8F0;
+  font-size: 0.8125rem;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+.civic-nav-links a:hover,
+.civic-nav-links a.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+/* ══ Official Gazette Notice Strip ══ */
+.civic-gazette-strip {
+  background: #FFFBEB;
+  border-bottom: 1px solid #FDE68A;
+  color: #92400E;
+  font-size: 0.8125rem;
+  padding: 0.5rem 0;
+}
+.civic-gazette-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.civic-badge-gazette {
+  background: #B45309;
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ══ Container ══ */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+/* ══ Institutional Cards ══ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sharp);
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.card-header {
+  border-bottom: 2px solid var(--civic-navy);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--civic-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* ══ Headings & Typography ══ */
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--civic-navy);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--foreground-secondary);
+  margin-bottom: 1.75rem;
+  line-height: 1.6;
+}
+.section-heading {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--civic-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--civic-navy);
+  padding-bottom: 0.35rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+/* ══ Official Form Controls ══ */
+label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--foreground-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+.field-hint {
+  font-size: 0.75rem;
+  color: var(--foreground-muted);
+  margin-top: 0.25rem;
+  display: block;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: var(--surface);
+  border: 1.5px solid #94A3B8;
+  border-radius: var(--radius-sharp);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--civic-navy);
+  box-shadow: 0 0 0 3px rgba(0, 43, 73, 0.15);
+}
+
+/* ══ Authoritative Buttons ══ */
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--civic-navy);
+  color: #FFFFFF;
+  border: 1.5px solid var(--civic-navy);
+  border-radius: var(--radius-sharp);
+  padding: 0.625rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.1s ease, border-color 0.1s ease;
+}
+button:hover, .btn:hover {
+  background-color: #001E33;
+  border-color: #001E33;
+  color: #FFFFFF;
+}
+button:disabled, .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--civic-navy);
+  border: 1.5px solid var(--border-strong);
+}
+.btn-secondary:hover {
+  background: var(--surface-secondary);
+  border-color: var(--civic-navy);
+  color: var(--civic-navy);
+}
+
+.btn-accent {
+  background: var(--civic-saffron);
+  border-color: var(--civic-saffron);
+  color: #FFFFFF;
+}
+.btn-accent:hover {
+  background: var(--civic-saffron-dark);
+  border-color: var(--civic-saffron-dark);
+}
+
+.btn-danger {
+  background: #FFFFFF;
+  color: var(--civic-red);
+  border: 1.5px solid var(--civic-red);
+}
+.btn-danger:hover {
+  background: var(--civic-red-light);
+  color: #991B1B;
+}
+
+/* ══ Institutional Badges ══ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-sharp);
+  border: 1px solid transparent;
+}
+.badge-primary {
+  background: var(--civic-navy-light);
+  color: var(--civic-navy);
+  border-color: #CBD5E1;
+}
+.badge-success {
+  background: var(--civic-green-light);
+  color: var(--civic-green-dark);
+  border-color: #86EFAC;
+}
+.badge-warning {
+  background: var(--civic-saffron-light);
+  color: #92400E;
+  border-color: #FDE68A;
+}
+.badge-error {
+  background: var(--civic-red-light);
+  color: #991B1B;
+  border-color: #FECACA;
+}
+.badge-neutral {
+  background: #F1F5F9;
+  color: #475569;
+  border-color: #CBD5E1;
+}
+
+/* ══ Civic Info Banners / Alerts ══ */
+.info-banner {
+  padding: 0.875rem 1rem;
+  border-left: 4px solid var(--civic-navy);
+  background: var(--civic-navy-light);
+  color: var(--civic-navy);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-sharp);
+}
+.info-banner.success {
+  border-left-color: var(--civic-green);
+  background: var(--civic-green-light);
+  color: var(--civic-green-dark);
+}
+.info-banner.warning {
+  border-left-color: var(--civic-saffron);
+  background: var(--civic-saffron-light);
+  color: #78350F;
+}
+.info-banner.error {
+  border-left-color: var(--civic-red);
+  background: var(--civic-red-light);
+  color: #7F1D1D;
+}
+
+/* ══ Structured Data Tables ══ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--civic-navy);
+  background: #EDF2F7;
+  border-bottom: 2px solid #CBD5E1;
+}
+td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+tr:hover td {
+  background: #F8FAFC;
+}
+
+/* ══ Gazette / Ledger Block ══ */
+.ledger {
+  border: 1.5px solid #86EFAC;
+  border-left: 5px solid var(--civic-green);
+  padding: 1rem 1.25rem;
+  background: #F0FDF4;
+  color: var(--civic-green-dark);
+  font-size: 0.875rem;
+  border-radius: var(--radius-sharp);
+}
+
+/* ══ Stepper ══ */
+.steps {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sharp);
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+}
+.steps .step {
+  flex: 1;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #F1F5F9;
+  color: #64748B;
+  border-right: 1px solid var(--border);
+}
+.steps .step:last-child {
+  border-right: none;
+}
+.steps .step.active {
+  background: var(--civic-navy);
+  color: #FFFFFF;
+}
+.steps .step.done {
+  background: #E2E8F0;
+  color: var(--civic-navy);
+}
+
+/* ══ Stat Cards ══ */
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--civic-navy);
+  padding: 1.25rem;
+  text-align: center;
+  border-radius: var(--radius-sharp);
+}
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--civic-navy);
+  font-family: var(--font-mono);
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+.stat-card .stat-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--foreground-muted);
+}
+
+/* ══ Queue Token Banner ══ */
+.queue-banner {
+  padding: 1rem 1.25rem;
+  background: var(--civic-navy);
+  color: #FFFFFF;
+  border-radius: var(--radius-sharp);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ══ Official Civic Footer ══ */
+.civic-footer {
+  background: #001B2E;
+  color: #94A3B8;
+  padding: 2.5rem 1.25rem;
+  font-size: 0.8125rem;
+  margin-top: 4rem;
+  border-top: 3px solid var(--civic-saffron);
+}
+.civic-footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+}
+.civic-footer a {
+  color: #CBD5E1;
+  font-weight: 400;
+}
+.civic-footer a:hover {
+  color: #FFFFFF;
+}
+.civic-footer-bottom {
+  max-width: var(--max-width);
+  margin: 2rem auto 0 auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #64748B;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .civic-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
