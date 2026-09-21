@@ -33,7 +33,7 @@ export default function BookSlot() {
     const user = JSON.parse(userStr);
     if (!user.state) { router.push('/profile'); return; }
     setFarmerState(user.state);
-    fetch(`http://localhost:4000/api/config/state-config/${user.state}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/config/state-config/${user.state}`)
       .then(res => res.json())
       .then(data => { setStateConfig(data); if (data.crops.length > 0) setCropType(data.crops[0]); })
       .catch(console.error);
@@ -45,7 +45,7 @@ export default function BookSlot() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:4000/api/mandi?date=${date}&state=${farmerState}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mandi?date=${date}&state=${farmerState}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Failed to fetch mandis');
@@ -60,7 +60,7 @@ export default function BookSlot() {
     setError('');
     if (stateConfig?.isArhtiyaRequired) {
       const token = localStorage.getItem('token');
-      fetch(`http://localhost:4000/api/arhtiya/list?state=${farmerState}&district=${mandi.district}`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/list?state=${farmerState}&district=${mandi.district}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
         .then(res => res.json())
@@ -76,7 +76,7 @@ export default function BookSlot() {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:4000/api/gatepass/book', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ mandiId, date, cropType, cropVariety, estimatedQuantity, vehicleType, arhtiyaId: arhtiyaId || undefined })

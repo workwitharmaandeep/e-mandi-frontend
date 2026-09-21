@@ -15,7 +15,7 @@ export default function ArhtiyaLogin() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:4000/api/arhtiya/request-otp', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/request-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pan })
@@ -30,7 +30,7 @@ export default function ArhtiyaLogin() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:4000/api/arhtiya/verify-otp', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pan, otp })

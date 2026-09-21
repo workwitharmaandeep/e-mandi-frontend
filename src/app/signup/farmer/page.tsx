@@ -30,7 +30,7 @@ export default function FarmerSignup() {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:4000/api/auth/signup/farmer', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup/farmer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

@@ -23,7 +23,7 @@ export default function ArhtiyaDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/arhtiya/bookings', { headers: { 'Authorization': `Bearer ${token}` } });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/bookings`, { headers: { 'Authorization': `Bearer ${token}` } });
       if (res.ok) setBookings(await res.json());
       else if (res.status === 401 || res.status === 403) router.push('/arhtiya');
     } catch (err) { console.error(err); }
@@ -32,7 +32,7 @@ export default function ArhtiyaDashboard() {
 
   const fetchEarnings = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/arhtiya/earnings', { headers: { 'Authorization': `Bearer ${token}` } });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/earnings`, { headers: { 'Authorization': `Bearer ${token}` } });
       if (res.ok) setEarnings(await res.json());
     } catch (err) { console.error(err); }
   };
@@ -40,7 +40,7 @@ export default function ArhtiyaDashboard() {
   const handleAction = async (gatePassId: string, action: 'accept' | 'reject') => {
     setOpMsg({ type: '', text: '' });
     try {
-      const res = await fetch(`http://localhost:4000/api/arhtiya/${action}/${gatePassId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/${action}/${gatePassId}`, {
         method: 'POST', headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) { setOpMsg({ type: 'success', text: `Booking ${action}ed successfully.` }); fetchBookings(); fetchEarnings(); }

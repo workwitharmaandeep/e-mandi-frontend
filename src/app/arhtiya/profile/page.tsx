@@ -35,7 +35,7 @@ export default function ArhtiyaProfile() {
     setError('');
     try {
       const token = localStorage.getItem('arhtiya_token');
-      const res = await fetch('http://localhost:4000/api/arhtiya/profile', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/arhtiya/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(formData)

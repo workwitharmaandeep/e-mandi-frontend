@@ -26,7 +26,7 @@ export default function AdminDashboard() {
   const fetchFromWeighbridge = async () => {
     setFetchingIot(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/mandi/simulate-weighbridge?estimatedQuantity=${actualQuantity || 50}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mandi/simulate-weighbridge?estimatedQuantity=${actualQuantity || 50}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
 
   const fetchMandis = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/mandi?date=${date}`, { headers: { 'Authorization': `Bearer ${token}` } });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mandi?date=${date}`, { headers: { 'Authorization': `Bearer ${token}` } });
       if (res.ok) setMandis(await res.json());
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setOpMsg({ type: '', text: '' });
     try {
-      const res = await fetch('http://localhost:4000/api/gatepass/scan', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ qrCodeToken: qrToken })
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setOpMsg({ type: '', text: '' });
     try {
-      const res = await fetch('http://localhost:4000/api/gatepass/quality-test', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/quality-test`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ gatePassId, moisture })
@@ -94,7 +94,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setOpMsg({ type: '', text: '' });
     try {
-      const res = await fetch('http://localhost:4000/api/gatepass/weigh', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/weigh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ gatePassId, actualQuantity, mspRate })
@@ -109,7 +109,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setOpMsg({ type: '', text: '' });
     try {
-      const res = await fetch('http://localhost:4000/api/gatepass/update-status', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/update-status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ gatePassId, status: updateStatus })

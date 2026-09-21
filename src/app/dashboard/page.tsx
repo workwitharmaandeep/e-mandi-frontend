@@ -32,7 +32,7 @@ export default function Dashboard() {
 
     const fetchPasses = async () => {
       try {
-        const res = await fetch('http://localhost:4000/api/gatepass/my-passes', { headers: { 'Authorization': `Bearer ${token}` } });
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/my-passes`, { headers: { 'Authorization': `Bearer ${token}` } });
         if (res.ok) setPasses(await res.json());
         else if (res.status === 401 || res.status === 403) router.push('/');
       } catch (err) { console.error(err); }
@@ -42,7 +42,7 @@ export default function Dashboard() {
     fetchPasses();
 
     // ── Real-Time WebSocket Connection ──
-    const socket: Socket = io('http://localhost:4000', {
+    const socket: Socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
       transports: ['websocket', 'polling']
     });
 
@@ -387,7 +387,7 @@ export default function Dashboard() {
                   setIsCancelling(true);
                   try {
                     const token = localStorage.getItem('token');
-                    const res = await fetch('http://localhost:4000/api/gatepass/cancel', {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/gatepass/cancel`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                       body: JSON.stringify({ gatePassId: cancelPassId, reason: finalReason })
