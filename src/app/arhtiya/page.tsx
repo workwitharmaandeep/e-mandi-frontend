@@ -82,11 +82,17 @@ export default function ArhtiyaLogin() {
             <button onClick={requestOtp} disabled={pan.length !== 10 || loading} style={{ width: '100%' }}>
               {loading ? 'Sending OTP…' : 'Request OTP'}
             </button>
+            <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+              <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>New Commission Agent? </span>
+              <a href="/signup/arhtiya" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--primary)', textDecoration: 'none' }}>
+                Register Here
+              </a>
+            </div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="info-banner">
-              OTP sent to PAN-linked mobile for <strong>{pan}</strong>. For demo, use: <strong>123456</strong>
+              OTP sent to PAN-linked mobile for <strong>{pan}</strong>.
             </div>
             <div>
               <label>One-Time Password</label>

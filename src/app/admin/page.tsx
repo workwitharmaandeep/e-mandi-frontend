@@ -46,9 +46,6 @@ export default function AdminLogin() {
         </div>
 
         <form onSubmit={handleLogin}>
-          <div className="info-banner" style={{ marginBottom: '1rem' }}>
-            For demo purposes, use secret: <strong>admin123</strong>
-          </div>
           <div style={{ marginBottom: '1rem' }}>
             <label>Administrative Secret</label>
             <input
@@ -62,6 +59,12 @@ export default function AdminLogin() {
           <button type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? 'Authenticating…' : 'Authenticate & Login'}
           </button>
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <span style={{ fontSize: '0.875rem', color: 'var(--muted-foreground)' }}>New Mandi Head? </span>
+            <a href="/signup/mandi" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--primary)', textDecoration: 'none' }}>
+              Register Here
+            </a>
+          </div>
         </form>
       </div>
 

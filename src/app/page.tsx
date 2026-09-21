@@ -137,21 +137,23 @@ export default function Home() {
                   <span className="field-hint">Enter the 12-digit number printed on your Aadhaar card</span>
                 </div>
 
-                <div className="info-banner" style={{ fontSize: '0.8125rem', marginBottom: '1.25rem' }}>
-                  Demo Authentication: Enter any 12-digit number (e.g. <strong>123456789012</strong>) to receive demo OTP.
-                </div>
-
                 {error && <div className="info-banner error" style={{ marginBottom: '1.25rem' }}>{error}</div>}
 
                 <button type="submit" disabled={loading} style={{ width: '100%' }}>
                   {loading ? 'Requesting OTP from UIDAI…' : 'Generate OTP →'}
                 </button>
+
+                <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--foreground-secondary)' }}>New Farmer? </span>
+                  <Link href="/signup/farmer" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--civic-navy)' }}>
+                    Sign Up Here
+                  </Link>
+                </div>
               </form>
             ) : (
               <form onSubmit={handleVerifyOtp}>
                 <div className="info-banner success" style={{ marginBottom: '1.25rem' }}>
-                  OTP generated for Aadhaar ending in <strong>{aadhaar.slice(-4)}</strong>.<br />
-                  Demo OTP code: <strong>123456</strong>
+                  OTP generated for Aadhaar ending in <strong>{aadhaar.slice(-4)}</strong>.
                 </div>
 
                 <div style={{ marginBottom: '1.25rem' }}>

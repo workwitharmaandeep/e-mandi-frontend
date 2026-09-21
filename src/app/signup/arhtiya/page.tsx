@@ -1,0 +1,105 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
+export default function ArhtiyaSignup() {
+  const [formData, setFormData] = useState({
+    pan: '',
+    name: '',
+    phone: '',
+    licenseNumber: '',
+    apmcMarket: ''
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('http://localhost:4000/api/arhtiya/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to sign up');
+      
+      setSuccess('Signup successful! Redirecting to login...');
+      setTimeout(() => {
+        router.push('/arhtiya');
+      }, 2000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container" style={{ maxWidth: '500px', marginTop: '2rem' }}>
+      <h1 className="title" style={{ fontSize: '1.8rem', marginBottom: '0.75rem' }}>Commission Agent Registration</h1>
+      <p className="subtitle" style={{ fontSize: '0.95rem', marginBottom: '2rem' }}>
+        Register your PAN and License Number to access the Arhtiya portal.
+      </p>
+
+      <div className="card" style={{ borderTop: '4px solid var(--primary)' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <label>PAN Number (10 Characters) *</label>
+            <input 
+              name="pan" 
+              value={formData.pan} 
+              onChange={(e) => setFormData({ ...formData, pan: e.target.value.toUpperCase() })} 
+              required 
+              maxLength={10} 
+              placeholder="e.g. ABCPK1234R"
+              style={{ textTransform: 'uppercase' }}
+            />
+          </div>
+          <div>
+            <label>Business Name *</label>
+            <input name="name" value={formData.name} onChange={handleChange} required placeholder="e.g. Rajesh Traders" />
+          </div>
+          <div>
+            <label>Phone Number *</label>
+            <input name="phone" value={formData.phone} onChange={handleChange} required maxLength={10} placeholder="e.g. 9999999999" />
+          </div>
+          <div>
+            <label>License Number *</label>
+            <input name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} required placeholder="e.g. HR-APMC-001" />
+          </div>
+          <div>
+            <label>APMC Market *</label>
+            <input name="apmcMarket" value={formData.apmcMarket} onChange={handleChange} required placeholder="e.g. Karnal Grain Market" />
+          </div>
+
+          {error && <div className="info-banner error">{error}</div>}
+          {success && <div className="info-banner success">{success}</div>}
+
+          <button type="submit" disabled={loading} style={{ marginTop: '0.5rem' }}>
+            {loading ? 'Registering...' : 'Complete Registration'}
+          </button>
+          
+          <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+            <Link href="/arhtiya" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--primary)' }}>
+              ← Back to Login
+            </Link>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

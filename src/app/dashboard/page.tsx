@@ -12,6 +12,14 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [farmer, setFarmer] = useState<any>(null);
   const [liveConnected, setLiveConnected] = useState(false);
+  
+  // Cancel Slot Modal State
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [cancelPassId, setCancelPassId] = useState<string | null>(null);
+  const [cancelReasonOption, setCancelReasonOption] = useState<string>('Weather conditions');
+  const [cancelOtherReason, setCancelOtherReason] = useState<string>('');
+  const [isCancelling, setIsCancelling] = useState(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -66,8 +74,6 @@ export default function Dashboard() {
 
   const getStatusLabel = (status: string) => {
     const map: Record<string, string> = {
-      'ARHTIYA_PENDING': 'Awaiting Arhtiya Approval',
-      'ARHTIYA_ACCEPTED': 'Arhtiya Confirmed',
       'ISSUED': 'Gate Pass Issued · Ready for Entry',
       'ARRIVED': 'Arrived at Mandi',
       'QUALITY_TESTED': 'Quality Grading Done',
@@ -80,8 +86,8 @@ export default function Dashboard() {
 
   const getStatusBadge = (status: string) => {
     if (['WEIGHED', 'LIFTED', 'PAYMENT_PROCESSED'].includes(status)) return 'badge-success';
-    if (['ARHTIYA_PENDING', 'ARRIVED', 'QUALITY_TESTED'].includes(status)) return 'badge-warning';
-    if (status === 'ARHTIYA_ACCEPTED' || status === 'ISSUED') return 'badge-primary';
+    if (['ARRIVED', 'QUALITY_TESTED'].includes(status)) return 'badge-warning';
+    if (status === 'ISSUED') return 'badge-primary';
     return 'badge-neutral';
   };
 
@@ -185,6 +191,21 @@ export default function Dashboard() {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <span className={`badge ${getStatusBadge(pass.status)}`}>{getStatusLabel(pass.status)}</span>
+                  {pass.status === 'ISSUED' && (
+                    <button
+                      onClick={() => {
+                        setCancelPassId(pass.id);
+                        setCancelReasonOption('Weather conditions');
+                        setCancelOtherReason('');
+                        setCancelModalOpen(true);
+                      }}
+                      className="btn-danger"
+                      style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
+                      title="Cancel Booking"
+                    >
+                      Cancel Slot
+                    </button>
+                  )}
                   <button
                     onClick={() => window.print()}
                     className="btn-secondary"
@@ -226,11 +247,6 @@ export default function Dashboard() {
                       <div style={{ color: 'var(--foreground-secondary)', fontSize: '0.75rem' }}>
                         License No: <strong>{pass.arhtiya.licenseNumber}</strong> · Market: {pass.arhtiya.apmcMarket} · Helpline: {pass.arhtiya.phone}
                       </div>
-                      {pass.arhtiyaStatus === 'PENDING' && (
-                        <div className="info-banner warning" style={{ marginTop: '0.5rem', marginBottom: 0, padding: '0.45rem 0.65rem', fontSize: '0.75rem' }}>
-                          Awaiting formal confirmation by the commission agent.
-                        </div>
-                      )}
                       {pass.arhtiyaStatus === 'REJECTED' && (
                         <div className="info-banner error" style={{ marginTop: '0.5rem', marginBottom: 0, padding: '0.45rem 0.65rem', fontSize: '0.75rem' }}>
                           Agent rejected allocation. Re-booking slot required.
@@ -309,6 +325,89 @@ export default function Dashboard() {
 
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Cancel Modal overlay */}
+      {cancelModalOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div className="card" style={{ width: '90%', maxWidth: '400px' }}>
+            <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Cancel Booking</h2>
+            <p style={{ fontSize: '0.875rem', marginBottom: '1rem', color: 'var(--foreground-muted)' }}>
+              Please select a reason for cancelling your slot.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+              {['Weather conditions', 'Transport issue', 'Crop not ready', 'Other'].map(option => (
+                <label key={option} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
+                  <input
+                    type="radio"
+                    name="cancelReason"
+                    value={option}
+                    checked={cancelReasonOption === option}
+                    onChange={(e) => setCancelReasonOption(e.target.value)}
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+
+            {cancelReasonOption === 'Other' && (
+              <div style={{ marginBottom: '1rem' }}>
+                <input
+                  type="text"
+                  placeholder="Please specify..."
+                  value={cancelOtherReason}
+                  onChange={(e) => setCancelOtherReason(e.target.value)}
+                  style={{ width: '100%', padding: '0.5rem', fontSize: '0.875rem', border: '1px solid var(--border)', borderRadius: '4px' }}
+                />
+              </div>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1rem' }}>
+              <button
+                className="btn-secondary"
+                onClick={() => setCancelModalOpen(false)}
+                disabled={isCancelling}
+                style={{ padding: '0.4rem 1rem' }}
+              >
+                Close
+              </button>
+              <button
+                className="btn-danger"
+                disabled={isCancelling}
+                onClick={async () => {
+                  const finalReason = cancelReasonOption === 'Other' ? cancelOtherReason.trim() : cancelReasonOption;
+                  if (finalReason.length < 5) {
+                    alert('Please provide a valid reason (min 5 characters).');
+                    return;
+                  }
+                  setIsCancelling(true);
+                  try {
+                    const token = localStorage.getItem('token');
+                    const res = await fetch('http://localhost:4000/api/gatepass/cancel', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                      body: JSON.stringify({ gatePassId: cancelPassId, reason: finalReason })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to cancel');
+                    setCancelModalOpen(false);
+                    // Trigger reload of passes is handled by WebSocket automatically
+                  } catch (err: any) {
+                    alert(err.message);
+                  } finally {
+                    setIsCancelling(false);
+                  }
+                }}
+                style={{ padding: '0.4rem 1rem' }}
+              >
+                {isCancelling ? 'Cancelling...' : 'Confirm'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
