@@ -132,7 +132,7 @@ export default function Dashboard() {
       )}
 
       {/* ── Section Title & Action ── */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--civic-navy)', paddingBottom: '0.75rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '2px solid var(--civic-navy)', paddingBottom: '0.75rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
             <h1 className="title" style={{ fontSize: '1.4rem', marginBottom: 0 }}>Registered Gate Passes &amp; Slips</h1>
@@ -174,7 +174,7 @@ export default function Dashboard() {
             <div key={pass.id} className="card" style={{ padding: 0, overflow: 'hidden', borderTop: '3px solid var(--civic-navy)' }}>
               
               {/* Slip Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.85rem 1.25rem', background: '#F1F5F9', borderBottom: '1px solid var(--border)', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.25rem', borderBottom: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--civic-navy)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -208,7 +208,7 @@ export default function Dashboard() {
                   )}
                   <button
                     onClick={() => window.print()}
-                    className="btn-secondary"
+                    className="btn-secondary hide-on-mobile"
                     style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
                     title="Print Gate Pass"
                   >
@@ -220,10 +220,10 @@ export default function Dashboard() {
               {/* Slip Body */}
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {/* Information Column */}
-                <div style={{ flex: 1, minWidth: '320px', padding: '1.25rem 1.5rem' }}>
+                <div style={{ flex: 1, minWidth: '250px', padding: '1.25rem 1.5rem' }}>
                   
                   {/* Commodity & Transport Specs */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginBottom: '1.25rem', background: '#F8FAFC', padding: '0.75rem', border: '1px solid var(--border-subtle)', borderRadius: '2px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1.5rem', marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-subtle)' }}>
                     <div>
                       <span style={{ color: 'var(--foreground-muted)', fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase' }}>Commodity</span>
                       <div style={{ fontWeight: 700, fontSize: '0.9375rem' }}>{pass.cropType} {pass.cropVariety && `(${pass.cropVariety})`}</div>
@@ -240,15 +240,15 @@ export default function Dashboard() {
 
                   {/* Arhtiya Commission Agent Block */}
                   {pass.arhtiya && (
-                    <div style={{ padding: '0.85rem', background: '#F8FAFC', borderLeft: '4px solid var(--civic-navy)', border: '1px solid var(--border)', borderLeftWidth: '4px', borderLeftColor: 'var(--civic-navy)', marginBottom: '1.25rem', borderRadius: '2px' }}>
+                    <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-subtle)' }}>
                       <div style={{ fontWeight: 700, fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--civic-navy)', marginBottom: '0.2rem' }}>
                         <User size={15} /> Assigned Arhtiya (Commission Agent): {pass.arhtiya.name}
                       </div>
-                      <div style={{ color: 'var(--foreground-secondary)', fontSize: '0.75rem' }}>
+                      <div style={{ color: 'var(--foreground-secondary)', fontSize: '0.8125rem' }}>
                         License No: <strong>{pass.arhtiya.licenseNumber}</strong> · Market: {pass.arhtiya.apmcMarket} · Helpline: {pass.arhtiya.phone}
                       </div>
                       {pass.arhtiyaStatus === 'REJECTED' && (
-                        <div className="info-banner error" style={{ marginTop: '0.5rem', marginBottom: 0, padding: '0.45rem 0.65rem', fontSize: '0.75rem' }}>
+                        <div style={{ marginTop: '0.75rem', color: 'var(--civic-red)', fontWeight: 600, fontSize: '0.8125rem' }}>
                           Agent rejected allocation. Re-booking slot required.
                         </div>
                       )}
@@ -271,11 +271,11 @@ export default function Dashboard() {
 
                   {/* Quality Inspection Results */}
                   {pass.qualityTest && (
-                    <div style={{ padding: '0.75rem 1rem', background: '#F1F5F9', border: '1px solid var(--border)', fontSize: '0.8125rem', marginBottom: '1.25rem', borderRadius: '2px' }}>
-                      <div style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '0.6875rem', color: 'var(--foreground-muted)', marginBottom: '0.25rem' }}>
+                    <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-subtle)' }}>
+                      <div style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '0.75rem', color: 'var(--foreground-muted)', marginBottom: '0.25rem' }}>
                         Quality &amp; Grading Certificate
                       </div>
-                      <div>
+                      <div style={{ fontSize: '0.875rem' }}>
                         Status: <strong style={{ color: pass.qualityTest.result === 'PASSED' ? 'var(--civic-green)' : 'var(--civic-red)' }}>{pass.qualityTest.result}</strong> · 
                         Moisture Content: <strong>{pass.qualityTest.moisture}%</strong> · 
                         Grade: <strong>{pass.qualityTest.grade || 'Standard FAQ'}</strong>
@@ -307,11 +307,11 @@ export default function Dashboard() {
                 </div>
 
                 {/* QR Code Pass Stamp */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderLeft: '1px solid var(--border)', padding: '1.75rem', background: '#F8FAFC', minWidth: '180px' }}>
-                  <div style={{ fontSize: '0.6875rem', color: 'var(--civic-navy)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 800 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', padding: '1.5rem', minWidth: '180px' }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--civic-navy)', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 800 }}>
                     Gate Entry Token
                   </div>
-                  <div style={{ padding: '0.6rem', background: '#FFFFFF', border: '1.5px solid var(--civic-navy)', borderRadius: '2px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                  <div style={{ padding: '1rem', background: '#FFFFFF', border: '2px solid var(--civic-navy)' }}>
                     <QRCodeSVG value={pass.qrCodeToken} size={110} />
                   </div>
                   <div style={{ fontSize: '0.6875rem', marginTop: '0.6rem', color: 'var(--foreground-muted)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>

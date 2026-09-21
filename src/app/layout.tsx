@@ -27,19 +27,13 @@ export default function RootLayout({
         {/* ── Top Citizen Utility Bar ── */}
         <div className="civic-topbar">
           <div className="civic-topbar-inner">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <span>भारत सरकार | Government of India</span>
-              <span style={{ opacity: 0.4 }}>|</span>
+              <span className="hide-on-mobile" style={{ opacity: 0.4 }}>|</span>
               <span>Ministry of Consumer Affairs, Food &amp; Public Distribution</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
               <span>☎ Kisan Helpline: <strong>1800-180-1551</strong></span>
-              <span style={{ opacity: 0.4 }}>|</span>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <Link href="/">Farmer</Link>
-                <Link href="/arhtiya">Arhtiya</Link>
-                <Link href="/admin">Admin</Link>
-              </div>
             </div>
           </div>
         </div>
